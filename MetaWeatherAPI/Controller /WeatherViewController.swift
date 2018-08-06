@@ -9,35 +9,32 @@
 import UIKit
 import CoreLocation
 
-
-
 class WeatherViewController: UIViewController {
+
+// MARK: - Properties
     
-    let searchBar: UISearchBar = {
-        let sb = UISearchBar()
-        sb.translatesAutoresizingMaskIntoConstraints = false
-        sb.placeholder = "Search"
-        sb.barStyle = .blackOpaque
-        sb.searchBarStyle = .minimal
-        sb.returnKeyType = .search
-        return sb
+    let searchController: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.placeholder = "Search"
+        searchBar.barStyle = .default
+        searchBar.searchBarStyle = .default
+        searchBar.returnKeyType = .search
+        return searchBar
+    }()
+    
+    let tableView: UITableView = {
+        let table = UITableView()
+        table.translatesAutoresizingMaskIntoConstraints = false
+        return table
     }()
     
     var showSearchHistory = false
     var searchHistory = [SearchHistoryItem]()
     
-    fileprivate func searchBarIsEmpty() -> Bool {
-        return searchBar.text?.isEmpty ?? true
-    }
+    let locationManager = CLLocationManager()
     
-    let tableView: UITableView = {
-        let tv = UITableView()
-        tv.translatesAutoresizingMaskIntoConstraints = false
-        return tv
-    }()
-    let cellIdentifier = "LocationCell"
-    
-    var gpsLocations = [Location]()
+    var geoLocations = [Location]()
     var searchLocations = [Location]()
     
     var gpsCoordinate: (latt: Double, long: Double)? {
@@ -46,92 +43,84 @@ class WeatherViewController: UIViewController {
         }
     }
     
-    fileprivate func getLocationsFromCoordinates() {
-        guard let latt = gpsCoordinate?.latt, let long = gpsCoordinate?.long else { return }
-        MetaWeatherService.shared.getLocationsFromCoordinates(latt: latt, long: long) { (success, locations) in
-            if success {
-                self.gpsLocations = locations
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            }
-        }
-    }
-    
-    let locationManager = CLLocationManager()
+// MARK: - WeatherViewController lifecycle methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        title = "MetaWeather Challenge"
-        
-        // Ask for Authorisation from the User.
-        self.locationManager.requestAlwaysAuthorization()
-        
-        // For use in foreground
-        self.locationManager.requestWhenInUseAuthorization()
-        
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            locationManager.startUpdatingLocation()
-        }
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(LocationCell.self, forCellReuseIdentifier: cellIdentifier)
-        
-        searchBar.delegate = self
-        
+        setupNavBar()
+        configureLocationManager()
+        setupTableView()
         setupView()
-        
         refreshSearchHistory()
+        
     }
     
-    fileprivate func refreshSearchHistory() {
-        searchHistory = SearchHistoryManager.shared.getSearchHistory()
+    override func viewDidAppear(_ animated: Bool) {
+        self.tableView.reloadData()
+    }
+    
+// MARK: - WeatherViewController setup methods
+    
+    private func setupNavBar() {
+        navigationItem.title = "Weather"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
+        navigationController?.navigationBar.barTintColor = UIColor.cyan
+        navigationItem.hidesSearchBarWhenScrolling = false
+        searchController.delegate = self
+    }
+    
+    private func configureLocationManager() {
+        locationManager.delegate = self
+        locationManager.startUpdatingLocation()
+    }
+    
+    private func setupTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(LocationCell.self, forCellReuseIdentifier: LocationCell.cellIdentifier)
     }
     
     fileprivate func setupView() {
         let margins = view.safeAreaLayoutGuide
-        
-        view.addSubview(searchBar)
+
+        view.addSubview(searchController)
         NSLayoutConstraint.activate([
-            searchBar.topAnchor.constraint(equalTo: margins.topAnchor, constant: 5),
-            searchBar.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
-            searchBar.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
-            searchBar.heightAnchor.constraint(equalToConstant: 35)
+            searchController.topAnchor.constraint(equalTo: margins.topAnchor, constant: 5),
+            searchController.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
+            searchController.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
+            searchController.heightAnchor.constraint(equalToConstant: 35)
             ])
         
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 5),
+            tableView.topAnchor.constraint(equalTo: searchController.bottomAnchor, constant: 5),
             tableView.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: margins.bottomAnchor)
             ])
         
     }
-    
-    fileprivate func getLocationsFromSearch(searchString: String) {
-        MetaWeatherService.shared.getLocationsFromSearch(string: searchString) { (success, locations) in
-            if success {
-                self.searchLocations = locations
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            }
-        }
-    }
-    
+
 }
 
+// Mark: searchController methods
+
 extension WeatherViewController: UISearchBarDelegate {
+    
+    fileprivate func searchBarIsEmpty() -> Bool {
+        return searchController.text?.isEmpty ?? true
+    }
+    
+    fileprivate func refreshSearchHistory() {
+        searchHistory = SearchHistoryManager.shared.getSearchHistory()
+    }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         showSearchHistory = true
         DispatchQueue.main.async {
             self.tableView.reloadData()
+
         }
     }
     
@@ -147,7 +136,7 @@ extension WeatherViewController: UISearchBarDelegate {
         showSearchHistory = false
         
         let formatter = DateFormatter() //get date string
-        formatter.dateFormat = "MM/dd/yyyy HH:mm"
+        formatter.dateFormat = "yyyy/MM/dd HH:mm"
         let date = formatter.string(from: Date())
         
         let searchitem = SearchHistoryItem(searchString: searchString, date: date)
@@ -160,18 +149,66 @@ extension WeatherViewController: UISearchBarDelegate {
     
 }
 
+ // MARK: - locationManager methods
+
 extension WeatherViewController: CLLocationManagerDelegate {
     
+    fileprivate func getLocationsFromCoordinates() {
+        guard let latt = gpsCoordinate?.latt, let long = gpsCoordinate?.long else { return }
+        MetaWeatherApi.shared.getLocationsFromCoordinates(latitude: latt, longitude: long) { (success, locations) in
+            if success {
+                self.geoLocations = locations
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
+    
+    fileprivate func getLocationsFromSearch(searchString: String) {
+        MetaWeatherApi.shared.getLocationsFromSearch(string: searchString) { (success, locations) in
+            if success {
+                self.searchLocations = locations
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
-        print("locations = \(locValue.latitude) \(locValue.longitude)")
-        if gpsCoordinate?.latt != locValue.latitude || gpsCoordinate?.long != locValue.longitude { //different coordinate
-            let coordinate = (latt: locValue.latitude, long: locValue.longitude)
+        guard let LocationValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        if gpsCoordinate?.latt != LocationValue.latitude || gpsCoordinate?.long != LocationValue.longitude { //different coordinate
+            let coordinate = (latt: LocationValue.latitude, long: LocationValue.longitude)
             gpsCoordinate = coordinate
         }
     }
     
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .notDetermined:
+            manager.requestWhenInUseAuthorization()
+        case .authorizedWhenInUse:
+            manager.startUpdatingLocation()
+        case .authorizedAlways:
+            manager.startUpdatingLocation()
+        case .restricted, .denied:
+            let alert = UIAlertController(title: "Location Services Disabled", message: "Please enable Location Services in Settings", preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alert.addAction(okAction)
+            
+            present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Error \(error)")
+    }
+    
 }
+
+// MARK: - WeatherViewController UITableViewDelegate & UITableViewDataSource
 
 extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -183,15 +220,11 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if showSearchHistory {
             return searchHistory.count
         }
-        return searchBarIsEmpty() ? gpsLocations.count : searchLocations.count
+        return searchBarIsEmpty() ? geoLocations.count : searchLocations.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -203,10 +236,10 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         }
         
-        let location = searchBarIsEmpty() ? gpsLocations[indexPath.row] : searchLocations[indexPath.row]
+        let location = searchBarIsEmpty() ? geoLocations[indexPath.row] : searchLocations[indexPath.row]
         
-        if let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? LocationCell {
-            cell.configureCell(location: location)
+        if let cell = tableView.dequeueReusableCell(withIdentifier: LocationCell.cellIdentifier, for: indexPath) as? LocationCell {
+            cell.configureCell(with: location)
             return cell
         } else {
             return LocationCell()
@@ -221,8 +254,7 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
             return
         }
         
-        let location = searchBarIsEmpty() ? gpsLocations[indexPath.row] : searchLocations[indexPath.row]
-        print(location.getWorldId())
+        let location = searchBarIsEmpty() ? geoLocations[indexPath.row] : searchLocations[indexPath.row]
         let vc = ForecastViewController()
         vc.location = location
         navigationController?.pushViewController(vc, animated: true)

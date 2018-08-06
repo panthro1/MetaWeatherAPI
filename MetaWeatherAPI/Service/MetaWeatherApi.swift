@@ -11,14 +11,14 @@ import Foundation
 
 import Foundation
 
-class MetaWeatherService {
+class MetaWeatherApi {
     
-    static let shared = MetaWeatherService()
+    static let shared = MetaWeatherApi()
     
-    private let BASE_URL = "https://www.metaweather.com"
+    private  let baseUrl = "https://www.metaweather.com"
     
-    func getLocationsFromCoordinates(latt: Double, long: Double, completion: @escaping (_ success: Bool, _ locations: [Location]) -> Void) {
-        let urlString = "\(BASE_URL)/api/location/search/?lattlong=\(latt),\(long)"
+    func getLocationsFromCoordinates(latitude: Double, longitude: Double, completion: @escaping (_ success: Bool, _ locations: [Location]) -> Void) {
+        let urlString = "\(baseUrl)/api/location/search/?lattlong=\(latitude),\(longitude)"
         guard let request = URL(string:urlString) else { completion(false, []); return }
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             guard let data = data, error == nil,
@@ -30,7 +30,6 @@ class MetaWeatherService {
             
             var locations = [Location]()
             for locationResult in results {
-                print(locationResult)
                 guard let distance = locationResult["distance"] as? Int,
                     let title = locationResult["title"] as? String,
                     let locationType = locationResult["location_type"] as? String,
@@ -40,14 +39,13 @@ class MetaWeatherService {
                 let location = Location(distance: distance, title: title, locationType: locationType, woied: worldId, coordinates: coordinates)
                 locations.append(location)
             }
-            
             completion(true, locations)
         }
         task.resume()
     }
     
     func getLocationsFromSearch(string: String, completion: @escaping (_ success: Bool, _ locations: [Location]) -> Void) {
-        let urlString = "\(BASE_URL)/api/location/search/?query=\(string)"
+        let urlString = "\(baseUrl)/api/location/search/?query=\(string)"
         guard let request = URL(string:urlString) else { completion(false, []); return }
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             guard let data = data, error == nil,
@@ -75,7 +73,7 @@ class MetaWeatherService {
     }
     
     func getForecast(worldId: Int, completion: @escaping (_ success: Bool, _ forecastDetails: [ForecastDetail]) -> Void) {
-        let urlString = "\(BASE_URL)/api/location/\(worldId)"
+        let urlString = "\(baseUrl)/api/location/\(worldId)"
         guard let request = URL(string:urlString) else { completion(false, []); return }
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             guard let data = data, error == nil,
@@ -88,7 +86,6 @@ class MetaWeatherService {
             if let consolidatedWeatherResult = results["consolidated_weather"] as? [[String: Any]] {
                 var forcastDetails = [ForecastDetail]()
                 for forecastDetailResult in consolidatedWeatherResult {
-                    print(forecastDetailResult)
                     guard let weatherStateName = forecastDetailResult["weather_state_name"] as? String,
                         let weatherStateAbbreviation = forecastDetailResult["weather_state_abbr"] as? String,
                         let date = forecastDetailResult["applicable_date"] as? String,
@@ -102,7 +99,7 @@ class MetaWeatherService {
                 
                 completion(true, forcastDetails)
                 
-            } else { //can't get forecast
+            } else {
                 completion(false, [])
             }
         }

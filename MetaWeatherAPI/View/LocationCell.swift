@@ -18,7 +18,17 @@ class LocationCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell(location: Location) {
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    
+    override func prepareForReuse() {
+        textLabel?.text?.removeAll()
+        detailTextLabel?.text?.removeAll()
+    }
+    
+    func configureCell(with location: Location) {
         textLabel?.text = location.getTitle()
         detailTextLabel?.text = "\(location.getLocationType()) \(location.getWorldId())"
     }
@@ -27,6 +37,14 @@ class LocationCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
         
         // Configure the view for the selected state
+    }
+    
+}
+
+extension UITableViewCell {
+    
+    static var cellIdentifier: String {
+        return String(describing: self)
     }
     
 }

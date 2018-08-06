@@ -9,8 +9,8 @@
 import UIKit
 
 class ForecastViewController: UIViewController {
-    
-    var location: Location!
+
+// MARK: - Properties
     
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -20,23 +20,25 @@ class ForecastViewController: UIViewController {
         cv.backgroundColor = .gray
         return cv
     }()
-    let cellIdentifier = "ForecastCell"
     
+    let cellIdentifier = "ForecastCell"
+    var location: Location!
     var forecastDetails = [ForecastDetail]()
+
+// MARK: - ForecastViewController lifecycle methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.backgroundColor = .white
-        title = location.getTitle()
-        
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.register(ForecastCell.self, forCellWithReuseIdentifier: cellIdentifier)
-        
+        setupMetaWeatherApi()
         setupView()
         
-        MetaWeatherService.shared.getForecast(worldId: location.getWorldId()) { (success, forecastDetail) in
+    }
+
+// MARK: - WeatherViewController setup methods
+    
+    // setup API Call
+    fileprivate func setupMetaWeatherApi() {
+        MetaWeatherApi.shared.getForecast(worldId: location.getWorldId()) { (success, forecastDetail) in
             if success {
                 self.forecastDetails = forecastDetail
                 DispatchQueue.main.async {
@@ -49,6 +51,12 @@ class ForecastViewController: UIViewController {
     fileprivate func setupView() {
         let margins = view.safeAreaLayoutGuide
         
+        title = location.getTitle()
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(ForecastCell.self, forCellWithReuseIdentifier: cellIdentifier)
+        
         view.addSubview(collectionView)
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: margins.topAnchor),
@@ -59,6 +67,8 @@ class ForecastViewController: UIViewController {
     }
     
 }
+
+// Mark: ForecastViewController UICollectionViewDelegate & UICollectionViewDataSource
 
 extension ForecastViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     

@@ -71,6 +71,11 @@ class ForecastCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    
     fileprivate func setupView() {
         let margins = contentView.layoutMarginsGuide
         
@@ -111,3 +116,5 @@ class ForecastCell: UICollectionViewCell {
     }
     
 }
+
+

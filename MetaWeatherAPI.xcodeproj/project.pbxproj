@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		990609B1211854DD00BED915 /* Readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 990609B0211854DD00BED915 /* Readme.md */; };
 		992B580F2117A01000DAA1CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 992B580E2117A01000DAA1CD /* AppDelegate.swift */; };
 		992B58112117A01000DAA1CD /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 992B58102117A01000DAA1CD /* WeatherViewController.swift */; };
 		992B58142117A01000DAA1CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 992B58122117A01000DAA1CD /* Main.storyboard */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		990609B0211854DD00BED915 /* Readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
 		992B580B2117A01000DAA1CD /* MetaWeatherAPI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetaWeatherAPI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		992B580E2117A01000DAA1CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		992B58102117A01000DAA1CD /* WeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 		992B58022117A01000DAA1CD = {
 			isa = PBXGroup;
 			children = (
+				990609B0211854DD00BED915 /* Readme.md */,
 				992B580D2117A01000DAA1CD /* MetaWeatherAPI */,
 				992B58222117A01200DAA1CD /* MetaWeatherAPIUITests */,
 				992B580C2117A01000DAA1CD /* Products */,
@@ -235,6 +238,7 @@
 			files = (
 				992B58192117A01100DAA1CD /* LaunchScreen.storyboard in Resources */,
 				992B58162117A01100DAA1CD /* Assets.xcassets in Resources */,
+				990609B1211854DD00BED915 /* Readme.md in Resources */,
 				992B58142117A01000DAA1CD /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
