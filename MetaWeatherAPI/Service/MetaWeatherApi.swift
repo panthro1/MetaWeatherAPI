@@ -11,6 +11,8 @@ import Foundation
 
 import Foundation
 
+// Given more time I would create better cases that handle error handling. also using a linter would help with introducing less bugs 
+
 class MetaWeatherApi {
     
     static let shared = MetaWeatherApi()
@@ -23,7 +25,7 @@ class MetaWeatherApi {
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             guard let data = data, error == nil,
                 let json = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers),
-                let results = json as? [[String: Any]] else { //error handling
+                let results = json as? [[String: Any]] else {
                     completion(false, [])
                     return
             }

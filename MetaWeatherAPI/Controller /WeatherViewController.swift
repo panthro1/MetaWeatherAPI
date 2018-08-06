@@ -9,6 +9,8 @@
 import UIKit
 import CoreLocation
 
+// Given more time I would have had every class conform to a protocol. By every class conforming to a protocol it would make testing easier.
+
 class WeatherViewController: UIViewController {
 
 // MARK: - Properties
@@ -209,6 +211,8 @@ extension WeatherViewController: CLLocationManagerDelegate {
 }
 
 // MARK: - WeatherViewController UITableViewDelegate & UITableViewDataSource
+
+// Given more time I would refactor this into it's own class
 
 extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
     
