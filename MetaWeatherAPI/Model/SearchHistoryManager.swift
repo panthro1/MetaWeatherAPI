@@ -8,10 +8,20 @@
 
 import Foundation
 
+//protocol SearchHistoryManagerDelegate: class {
+//    func addSearchHistory(searchItem: SearchHistoryItem)
+//    func getSearchHistory() -> [SearchHistoryItem]
+//}
+
 class SearchHistoryManager {
-    
+   
     static let shared = SearchHistoryManager()
     
+    //Create filePath to get URL
+    // Create manager to locate the file we want
+    // Returns the shared file manager object for the process. default
+    // Returns an array of URLs for the specified common directory in the requested domains.
+    // if all fails its nil
     private var filePath: URL? {
         let manager = FileManager.default
         guard let url = manager.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
@@ -20,6 +30,9 @@ class SearchHistoryManager {
     
     let fileName = "History"
     
+    //Returns a URL constructed by appending the filePath path component to self.
+    // A decoder that restores data from an archive referenced by keys. (SearchHistoryItem)
+    //
     func addToSearchHistory(searchItem: SearchHistoryItem) {
         guard let fullPath = filePath?.appendingPathComponent(fileName) else { return }
         

@@ -13,7 +13,7 @@
 		992B58142117A01000DAA1CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 992B58122117A01000DAA1CD /* Main.storyboard */; };
 		992B58162117A01100DAA1CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 992B58152117A01100DAA1CD /* Assets.xcassets */; };
 		992B58192117A01100DAA1CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 992B58172117A01100DAA1CD /* LaunchScreen.storyboard */; };
-		992B58242117A01200DAA1CD /* MetaWeatherAPIUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 992B58232117A01200DAA1CD /* MetaWeatherAPIUITests.swift */; };
+		9952D8992123BFA300ED05FD /* MetaWeatherAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9952D8982123BFA300ED05FD /* MetaWeatherAPITests.swift */; };
 		999BBA532117C92000C6ADED /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999BBA522117C92000C6ADED /* Location.swift */; };
 		999BBA552117CB8200C6ADED /* MetaWeatherApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999BBA542117CB8200C6ADED /* MetaWeatherApi.swift */; };
 		999BBA5B2117DB5A00C6ADED /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999BBA5A2117DB5A00C6ADED /* LocationCell.swift */; };
@@ -32,6 +32,13 @@
 			remoteGlobalIDString = 992B580A2117A01000DAA1CD;
 			remoteInfo = MetaWeatherAPI;
 		};
+		9952D89B2123BFA300ED05FD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 992B58032117A01000DAA1CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 992B580A2117A01000DAA1CD;
+			remoteInfo = MetaWeatherAPI;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -44,8 +51,9 @@
 		992B58182117A01100DAA1CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		992B581A2117A01100DAA1CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		992B581F2117A01200DAA1CD /* MetaWeatherAPIUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MetaWeatherAPIUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		992B58232117A01200DAA1CD /* MetaWeatherAPIUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaWeatherAPIUITests.swift; sourceTree = "<group>"; };
-		992B58252117A01200DAA1CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9952D8962123BFA300ED05FD /* MetaWeatherAPITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MetaWeatherAPITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9952D8982123BFA300ED05FD /* MetaWeatherAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaWeatherAPITests.swift; sourceTree = "<group>"; };
+		9952D89A2123BFA300ED05FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		999BBA522117C92000C6ADED /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		999BBA542117CB8200C6ADED /* MetaWeatherApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaWeatherApi.swift; sourceTree = "<group>"; };
 		999BBA5A2117DB5A00C6ADED /* LocationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
@@ -71,6 +79,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9952D8932123BFA300ED05FD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -79,7 +94,7 @@
 			children = (
 				990609B0211854DD00BED915 /* Readme.md */,
 				992B580D2117A01000DAA1CD /* MetaWeatherAPI */,
-				992B58222117A01200DAA1CD /* MetaWeatherAPIUITests */,
+				9952D8972123BFA300ED05FD /* MetaWeatherAPITests */,
 				992B580C2117A01000DAA1CD /* Products */,
 			);
 			sourceTree = "<group>";
@@ -89,6 +104,7 @@
 			children = (
 				992B580B2117A01000DAA1CD /* MetaWeatherAPI.app */,
 				992B581F2117A01200DAA1CD /* MetaWeatherAPIUITests.xctest */,
+				9952D8962123BFA300ED05FD /* MetaWeatherAPITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -109,13 +125,13 @@
 			path = MetaWeatherAPI;
 			sourceTree = "<group>";
 		};
-		992B58222117A01200DAA1CD /* MetaWeatherAPIUITests */ = {
+		9952D8972123BFA300ED05FD /* MetaWeatherAPITests */ = {
 			isa = PBXGroup;
 			children = (
-				992B58232117A01200DAA1CD /* MetaWeatherAPIUITests.swift */,
-				992B58252117A01200DAA1CD /* Info.plist */,
+				9952D8982123BFA300ED05FD /* MetaWeatherAPITests.swift */,
+				9952D89A2123BFA300ED05FD /* Info.plist */,
 			);
-			path = MetaWeatherAPIUITests;
+			path = MetaWeatherAPITests;
 			sourceTree = "<group>";
 		};
 		999BBA562117DAE400C6ADED /* Service */ = {
@@ -193,6 +209,24 @@
 			productReference = 992B581F2117A01200DAA1CD /* MetaWeatherAPIUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		9952D8952123BFA300ED05FD /* MetaWeatherAPITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9952D89F2123BFA300ED05FD /* Build configuration list for PBXNativeTarget "MetaWeatherAPITests" */;
+			buildPhases = (
+				9952D8922123BFA300ED05FD /* Sources */,
+				9952D8932123BFA300ED05FD /* Frameworks */,
+				9952D8942123BFA300ED05FD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9952D89C2123BFA300ED05FD /* PBXTargetDependency */,
+			);
+			name = MetaWeatherAPITests;
+			productName = MetaWeatherAPITests;
+			productReference = 9952D8962123BFA300ED05FD /* MetaWeatherAPITests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -207,6 +241,10 @@
 						CreatedOnToolsVersion = 9.4.1;
 					};
 					992B581E2117A01200DAA1CD = {
+						CreatedOnToolsVersion = 9.4.1;
+						TestTargetID = 992B580A2117A01000DAA1CD;
+					};
+					9952D8952123BFA300ED05FD = {
 						CreatedOnToolsVersion = 9.4.1;
 						TestTargetID = 992B580A2117A01000DAA1CD;
 					};
@@ -227,6 +265,7 @@
 			targets = (
 				992B580A2117A01000DAA1CD /* MetaWeatherAPI */,
 				992B581E2117A01200DAA1CD /* MetaWeatherAPIUITests */,
+				9952D8952123BFA300ED05FD /* MetaWeatherAPITests */,
 			);
 		};
 /* End PBXProject section */
@@ -244,6 +283,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		992B581D2117A01200DAA1CD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9952D8942123BFA300ED05FD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -274,7 +320,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				992B58242117A01200DAA1CD /* MetaWeatherAPIUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9952D8922123BFA300ED05FD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9952D8992123BFA300ED05FD /* MetaWeatherAPITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,6 +338,11 @@
 			isa = PBXTargetDependency;
 			target = 992B580A2117A01000DAA1CD /* MetaWeatherAPI */;
 			targetProxy = 992B58202117A01200DAA1CD /* PBXContainerItemProxy */;
+		};
+		9952D89C2123BFA300ED05FD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 992B580A2117A01000DAA1CD /* MetaWeatherAPI */;
+			targetProxy = 9952D89B2123BFA300ED05FD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -500,6 +558,46 @@
 			};
 			name = Release;
 		};
+		9952D89D2123BFA300ED05FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YV6DUSMYTW;
+				INFOPLIST_FILE = MetaWeatherAPITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.johnLedesma.MetaWeatherAPITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MetaWeatherAPI.app/MetaWeatherAPI";
+			};
+			name = Debug;
+		};
+		9952D89E2123BFA300ED05FD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YV6DUSMYTW;
+				INFOPLIST_FILE = MetaWeatherAPITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.johnLedesma.MetaWeatherAPITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MetaWeatherAPI.app/MetaWeatherAPI";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -526,6 +624,15 @@
 			buildConfigurations = (
 				992B582C2117A01200DAA1CD /* Debug */,
 				992B582D2117A01200DAA1CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9952D89F2123BFA300ED05FD /* Build configuration list for PBXNativeTarget "MetaWeatherAPITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9952D89D2123BFA300ED05FD /* Debug */,
+				9952D89E2123BFA300ED05FD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
