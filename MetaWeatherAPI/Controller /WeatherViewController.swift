@@ -15,8 +15,10 @@ class WeatherViewController: UIViewController {
 
 // MARK: - Properties
     
+    let searchController = UISearchController(searchResultsController: nil)
+    
     // closure block
-    let searchBar: UISearchBar = {
+    lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         searchBar.placeholder = "Search"
@@ -72,8 +74,14 @@ class WeatherViewController: UIViewController {
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
         navigationController?.navigationBar.barTintColor = UIColor.cyan
         // Fix
-        navigationItem.hidesSearchBarWhenScrolling = true
-        searchBar.delegate = self
+//        navigationItem.hidesSearchBarWhenScrolling = true
+//        searchBar.delegate = self
+        // Setup the Search Controller
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
     }
     
     // The delegate object to receive update events.
@@ -92,17 +100,18 @@ class WeatherViewController: UIViewController {
     fileprivate func setupView() {
         let margins = view.safeAreaLayoutGuide
 
-        view.addSubview(searchBar)
-        NSLayoutConstraint.activate([
-            searchBar.topAnchor.constraint(equalTo: margins.topAnchor, constant: 5),
-            searchBar.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
-            searchBar.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
-            searchBar.heightAnchor.constraint(equalToConstant: 35)
-            ])
+//        view.addSubview(searchBar)
+//        NSLayoutConstraint.activate([
+//            searchBar.topAnchor.constraint(equalTo: margins.topAnchor, constant: 5),
+//            searchBar.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
+//            searchBar.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
+//            searchBar.heightAnchor.constraint(equalToConstant: 35)
+//            ])
         
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 5),
+//            tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 5),
+            tableView.topAnchor.constraint(equalTo: margins.topAnchor, constant: 5),
             tableView.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: margins.bottomAnchor)
@@ -114,26 +123,43 @@ class WeatherViewController: UIViewController {
 
 // Mark: searchController methods
 
+extension WeatherViewController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        // TODO
+    }
+}
+
+
 extension WeatherViewController: UISearchBarDelegate {
     
+    
     fileprivate func searchBarIsEmpty() -> Bool {
-        return searchBar.text?.isEmpty ?? true
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
     }
     
     fileprivate func refreshSearchHistory() {
         searchHistory = SearchHistoryManager.shared.getSearchHistory()
     }
     
-
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        showSearchHistory = false
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        showSearchHistory = true
 //        DispatchQueue.main.async {
-            self.tableView.reloadData()
+//            self.tableView.reloadData()
 //        }
     }
     
+
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        showSearchHistory = false
+////        DispatchQueue.main.async {
+//            self.tableView.reloadData()
+////        }
+    }
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let searchString = searchBar.text else { return }
+        guard let searchString = searchController.searchBar.text else { return }
         showSearchHistory = false
         
         let formatter = DateFormatter() //get date string
