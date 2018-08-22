@@ -15,26 +15,6 @@ class WeatherViewController: UIViewController {
 
 // MARK: - Properties
     
-    let searchController = UISearchController(searchResultsController: nil)
-    
-    // closure block
-    lazy var searchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.translatesAutoresizingMaskIntoConstraints = false
-        searchBar.placeholder = "Search"
-        searchBar.barStyle = .default
-        searchBar.searchBarStyle = .default
-        searchBar.returnKeyType = .search
-        return searchBar
-    }()
-    
-    // table view closure block
-    let tableView: UITableView = {
-        let table = UITableView()
-        table.translatesAutoresizingMaskIntoConstraints = false
-        return table
-    }()
-    
     var showSearchHistory = false
     var searchHistory = [SearchHistoryItem]()
     
@@ -48,6 +28,14 @@ class WeatherViewController: UIViewController {
             getLocationsFromCoordinates()
         }
     }
+    
+    let searchController = UISearchController(searchResultsController: nil)
+    
+    let tableView: UITableView = {
+        let table = UITableView()
+        table.translatesAutoresizingMaskIntoConstraints = false
+        return table
+    }()
     
 // MARK: - WeatherViewController lifecycle methods
     
@@ -70,23 +58,20 @@ class WeatherViewController: UIViewController {
     // Sets up our navigation controller
     private func setupNavBar() {
         navigationItem.title = "Weather"
+        navigationItem.searchController = searchController
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
         navigationController?.navigationBar.barTintColor = UIColor.cyan
-        // Fix
-//        navigationItem.hidesSearchBarWhenScrolling = true
-//        searchBar.delegate = self
-        // Setup the Search Controller
-        searchController.searchResultsUpdater = self
+        navigationItem.hidesSearchBarWhenScrolling = true
+
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search"
-        navigationItem.searchController = searchController
         definesPresentationContext = true
         searchController.searchBar.delegate = self
     }
     
     // The delegate object to receive update events.
-    // Starts the generation of updates that report the user’s current location. This method returns immediately. Calling this method causes the location manager to obtain an initial location fix (which may take several seconds) and notify your delegate by calling its
+    // Starts the generation of updates that report the user’s current location. This method returns immediately. Calling this method causes the location manager to obtain an initial location fix (which may take several seconds) and notify your delegate by calling its locationManager method.
     private func configureLocationManager() {
         locationManager.delegate = self
         locationManager.startUpdatingLocation()
@@ -100,40 +85,21 @@ class WeatherViewController: UIViewController {
     
     fileprivate func setupView() {
         let margins = view.safeAreaLayoutGuide
-
-//        view.addSubview(searchBar)
-//        NSLayoutConstraint.activate([
-//            searchBar.topAnchor.constraint(equalTo: margins.topAnchor, constant: 5),
-//            searchBar.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
-//            searchBar.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
-//            searchBar.heightAnchor.constraint(equalToConstant: 35)
-//            ])
-        
         view.addSubview(tableView)
+        
         NSLayoutConstraint.activate([
-//            tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 5),
             tableView.topAnchor.constraint(equalTo: margins.topAnchor, constant: 5),
             tableView.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: margins.bottomAnchor)
             ])
-        
     }
 
 }
 
 // Mark: searchController methods
 
-extension WeatherViewController: UISearchResultsUpdating {
-    // MARK: - UISearchResultsUpdating Delegate
-    func updateSearchResults(for searchController: UISearchController) {
-        // TODO
-    }
-}
-
-
 extension WeatherViewController: UISearchBarDelegate {
-    
     
     fileprivate func searchBarIsEmpty() -> Bool {
         // Returns true if the text is empty or nil
@@ -146,24 +112,18 @@ extension WeatherViewController: UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         showSearchHistory = true
-//        DispatchQueue.main.async {
-//            self.tableView.reloadData()
-//        }
     }
     
-
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         showSearchHistory = false
-////        DispatchQueue.main.async {
-//            self.tableView.reloadData()
-////        }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searchString = searchController.searchBar.text else { return }
         showSearchHistory = false
         
-        let formatter = DateFormatter() //get date string
+        //get date string
+        let formatter = DateFormatter()
         formatter.dateFormat = "yyyy/MM/dd HH:mm"
         let date = formatter.string(from: Date())
         
@@ -245,18 +205,17 @@ extension WeatherViewController: UITableViewDelegate, UITableViewDataSource {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         view.endEditing(true) //dismiss keyboard
         showSearchHistory = false
-//        DispatchQueue.main.async {
-//            self.tableView.reloadData()
-//        }
     }
-    // Must implement 
+    
+    // Required  tableView method numberOfRowsInSection
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if showSearchHistory {
             return searchHistory.count
         }
         return searchBarIsEmpty() ? geoLocations.count : searchLocations.count
     }
-    // Must implement
+    
+    // Required  tableView method cellForRowAt
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if showSearchHistory { //shortcut to show search history. If I had more time I would implement as I did with gps entries.
             let searchItem = searchHistory[indexPath.row]

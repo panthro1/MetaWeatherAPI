@@ -12,6 +12,10 @@ class ForecastViewController: UIViewController {
 
 // MARK: - Properties
     
+    let cellIdentifier = "ForecastCell"
+    var location: Location!
+    var forecastDetails = [ForecastDetail]()
+    
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -21,10 +25,6 @@ class ForecastViewController: UIViewController {
         return cv
     }()
     
-    let cellIdentifier = "ForecastCell"
-    var location: Location!
-    var forecastDetails = [ForecastDetail]()
-
 // MARK: - ForecastViewController lifecycle methods
     
     override func viewDidLoad() {
@@ -48,6 +48,7 @@ class ForecastViewController: UIViewController {
         }
     }
     
+    // setup view 
     fileprivate func setupView() {
         let margins = view.safeAreaLayoutGuide
         

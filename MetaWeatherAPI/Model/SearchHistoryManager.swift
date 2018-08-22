@@ -8,11 +8,6 @@
 
 import Foundation
 
-//protocol SearchHistoryManagerDelegate: class {
-//    func addSearchHistory(searchItem: SearchHistoryItem)
-//    func getSearchHistory() -> [SearchHistoryItem]
-//}
-
 class SearchHistoryManager {
    
     static let shared = SearchHistoryManager()
@@ -31,8 +26,6 @@ class SearchHistoryManager {
     let fileName = "History"
     
     //Returns a URL constructed by appending the filePath path component to self.
-    // A decoder that restores data from an archive referenced by keys. (SearchHistoryItem)
-    //
     func addToSearchHistory(searchItem: SearchHistoryItem) {
         guard let fullPath = filePath?.appendingPathComponent(fileName) else { return }
         
