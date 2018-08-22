@@ -82,6 +82,7 @@ class WeatherViewController: UIViewController {
         searchController.searchBar.placeholder = "Search"
         navigationItem.searchController = searchController
         definesPresentationContext = true
+        searchController.searchBar.delegate = self
     }
     
     // The delegate object to receive update events.
